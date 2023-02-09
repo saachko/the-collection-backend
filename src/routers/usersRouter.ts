@@ -6,11 +6,12 @@ import {
   deleteUser,
   updateUser,
 } from '../controllers/usersController';
+import usersMiddleware from '../middlewares/usersMiddlewares';
 
 const usersRouter = express.Router();
-usersRouter.get('/', getUsers);
-usersRouter.get('/:id', getUserById);
-usersRouter.delete('/:id', deleteUser);
-usersRouter.put('/:id', updateUser);
+usersRouter.get('/', usersMiddleware, getUsers);
+usersRouter.get('/:id', usersMiddleware, getUserById);
+usersRouter.delete('/:id', usersMiddleware, deleteUser);
+usersRouter.put('/:id', usersMiddleware, updateUser);
 
 export default usersRouter;
