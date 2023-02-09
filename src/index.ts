@@ -1,12 +1,14 @@
 import * as dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
+import corsResolver from './middlewares/corsMiddleware';
 
 dotenv.config();
 const PORT = process.env.PORT || 3002;
 
 const app = express();
 app.use(express.json());
+app.use(corsResolver);
 
 mongoose.set('strictQuery', false);
 const start = async () => {
