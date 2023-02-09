@@ -5,6 +5,8 @@ import { validationResult } from 'express-validator';
 import User from '../models/user';
 import Role from '../models/role';
 
+import { generateToken } from '../utils/functions';
+
 const signUp = async (request: Request, response: Response) => {
   try {
     const validationErrors = validationResult(request);
@@ -39,6 +41,20 @@ const signUp = async (request: Request, response: Response) => {
 
 const signIn = async (request: Request, response: Response) => {
   try {
+    const { email, password } = request.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return response.status(400).json({ message: "User doesn't exist" });
+    }
+    const validPassword = bcrypt.compareSync(password, user.password);
+    if (!validPassword) {
+      return response.status(400).json({ message: 'Incorrect password!' });
+    }
+    if (user.isBlocked) {
+      return response.status(403).json({ message: 'User is blocked!' });
+    }
+    const token = generateToken(user._id.toString(), user.roles, user.isBlocked);
+    return response.json({ user, token });
   } catch (error) {
     response.status(400).json({ message: 'Authorization error' });
     throw new Error(`${error}`);
