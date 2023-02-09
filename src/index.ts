@@ -7,6 +7,7 @@ import corsResolver from './middlewares/corsMiddleware';
 import authRouter from './routers/authRouter';
 import usersRouter from './routers/usersRouter';
 import collectionsRouter from './routers/collectionsRouter';
+import customFieldsRouter from './routers/customFieldsRouter';
 
 dotenv.config();
 const PORT = process.env.PORT || 3002;
@@ -17,6 +18,7 @@ app.use(corsResolver);
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/collections', collectionsRouter);
+app.use('/customFields', customFieldsRouter);
 
 mongoose.set('strictQuery', false);
 const start = async () => {
