@@ -30,12 +30,6 @@ const userScheme = new Schema(
         ref: 'Role',
       },
     ],
-    collections: [
-      {
-        type: String,
-        ref: 'Collection',
-      },
-    ],
   },
   { timestamps: true, versionKey: false }
 );

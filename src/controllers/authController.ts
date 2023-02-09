@@ -29,7 +29,6 @@ const signUp = async (request: Request, response: Response) => {
       avatar: `https://source.boringavatars.com/beam/120/${username}%20${email}?colors=F97D58,CDDCEB,F9DBCF,33B99,5D70C5&square`,
       isBlocked: false,
       roles: [userRole?.value],
-      collections: [],
     });
     await newUser.save();
     return response.json({ user: newUser, message: 'New user is created' });
