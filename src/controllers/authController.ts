@@ -1,11 +1,17 @@
 import { Response, Request } from 'express';
 import bcrypt from 'bcryptjs';
+import { validationResult } from 'express-validator';
 
 import User from '../models/user';
 import Role from '../models/role';
 
 const signUp = async (request: Request, response: Response) => {
   try {
+    const validationErrors = validationResult(request);
+    if (!validationErrors.isEmpty()) {
+      response.status(400).json({ message: 'Registration error', validationErrors });
+    }
+
     const { username, email, password } = request.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
