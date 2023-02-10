@@ -8,6 +8,7 @@ import authRouter from './routers/authRouter';
 import usersRouter from './routers/usersRouter';
 import collectionsRouter from './routers/collectionsRouter';
 import customFieldsRouter from './routers/customFieldsRouter';
+import itemsRouter from './routers/itemsRouter';
 
 dotenv.config();
 const PORT = process.env.PORT || 3002;
@@ -19,6 +20,7 @@ app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/collections', collectionsRouter);
 app.use('/customFields', customFieldsRouter);
+app.use('/items', itemsRouter);
 
 mongoose.set('strictQuery', false);
 const start = async () => {

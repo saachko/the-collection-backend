@@ -21,24 +21,30 @@ const itemScheme = new Schema(
       type: String,
       required: true,
     },
-    likes: {
-      type: [String],
-      ref: ['User'],
-    },
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: '',
+      },
+    ],
     customFields: [
       {
-        customFieldId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'CustomField',
-          required: true,
+        type: {
+          customFieldId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'CustomField',
+            required: true,
+          },
+          label: {
+            type: String,
+            required: true,
+          },
+          value: {
+            type: String,
+          },
         },
-        label: {
-          type: String,
-          required: true,
-        },
-        value: {
-          type: String,
-        },
+        default: '',
       },
     ],
   },

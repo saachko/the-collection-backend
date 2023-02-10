@@ -54,7 +54,7 @@ const createItem = async (request: Request, response: Response) => {
       customFields,
     });
     await newItem.save();
-    return response.json({ item: newItem, message: 'New collection is created' });
+    return response.json({ item: newItem, message: 'New item is created' });
   } catch (error) {
     response.status(400).json({ message: 'Unexpected creation error' });
     throw new Error(`${error}`);
