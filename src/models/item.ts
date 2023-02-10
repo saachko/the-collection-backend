@@ -1,6 +1,22 @@
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
+
+const customFieldScheme = new Schema({
+  customFieldId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'CustomField',
+    required: true,
+  },
+  label: {
+    type: String,
+    required: true,
+  },
+  value: {
+    type: String,
+  },
+});
+
 const itemScheme = new Schema(
   {
     collectionId: {
@@ -28,25 +44,7 @@ const itemScheme = new Schema(
         default: '',
       },
     ],
-    customFields: [
-      {
-        type: {
-          customFieldId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'CustomField',
-            required: true,
-          },
-          label: {
-            type: String,
-            required: true,
-          },
-          value: {
-            type: String,
-          },
-        },
-        default: '',
-      },
-    ],
+    customFields: [customFieldScheme],
   },
   { timestamps: true, versionKey: false }
 );

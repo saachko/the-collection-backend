@@ -53,7 +53,7 @@ const createItem = async (request: Request, response: Response) => {
       ownerName,
       itemName,
       likes,
-      customFields,
+      customFields: customFields || [],
     });
     await newItem.save();
     return response.json({ item: newItem, message: 'New item is created' });
