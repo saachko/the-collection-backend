@@ -3,6 +3,8 @@ import { ObjectId } from 'mongodb';
 
 import User from '../models/user';
 
+import { handleUserDelete } from '../utils/deletionHandlers';
+
 const getUsers = async (request: Request, response: Response) => {
   try {
     const users = await User.find().sort({ createdAt: -1 });
@@ -25,6 +27,7 @@ const getUserById = async (request: Request, response: Response) => {
 const deleteUser = async (request: Request, response: Response) => {
   try {
     const userId = new ObjectId(request.params.id);
+    await handleUserDelete(userId);
     const deletedUser = await User.findByIdAndDelete(userId);
     response.json(deletedUser);
   } catch (error) {

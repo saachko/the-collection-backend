@@ -4,6 +4,7 @@ import Comment from '../models/comment';
 import Tag from '../models/tag';
 import Item from '../models/item';
 import CustomField from '../models/customField';
+import Collection from '../models/collection';
 
 const handleItemDelete = async (itemId: string) => {
   await Comment.deleteMany({ itemId: itemId });
@@ -25,4 +26,12 @@ const handleCollectionDelete = async (collectionId: ObjectId) => {
   await Item.deleteMany({ collectionId: collectionId });
 };
 
-export { handleItemDelete, handleCollectionDelete };
+const handleUserDelete = async (userId: ObjectId) => {
+  const collectionsByUser = await Collection.find({ ownerId: userId });
+  collectionsByUser.map(
+    async (collection) => await handleCollectionDelete(collection._id)
+  );
+  await Collection.deleteMany({ ownerId: userId });
+};
+
+export { handleItemDelete, handleCollectionDelete, handleUserDelete };
