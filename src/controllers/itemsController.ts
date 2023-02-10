@@ -72,13 +72,10 @@ const deleteItem = async (request: Request, response: Response) => {
         $all: itemId,
       },
     });
-    updatedTags.map(
-      async (tag) =>
-        await Tag.findByIdAndUpdate(tag._id, {
-          ...tag,
-          items: tag.items.filter((id) => id !== itemId),
-        })
+    const newItemsList = updatedTags.map((tag) =>
+      tag.items.filter((id) => id.toString() !== request.params.itemId)
     );
+    await Tag.updateMany({ items: itemId }, { $set: { items: newItemsList.flat() } });
     const deletedItem = await Item.findByIdAndDelete(itemId);
     response.json(deletedItem);
   } catch (error) {
