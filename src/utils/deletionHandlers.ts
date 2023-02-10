@@ -13,10 +13,16 @@ const handleItemDelete = async (itemId: string) => {
       $all: itemId,
     },
   });
-  const newItemsList = updatedTags.map((tag) =>
-    tag.items.filter((id) => id.toString() !== itemId)
-  );
-  await Tag.updateMany({ items: itemId }, { $set: { items: newItemsList.flat() } });
+  updatedTags.map(async (tag) => {
+    await Tag.findByIdAndUpdate(
+      tag._id,
+      {
+        label: tag.label,
+        items: tag.items.filter((id) => id.toString() !== itemId),
+      },
+      { new: true }
+    );
+  });
 };
 
 const handleCollectionDelete = async (collectionId: ObjectId) => {
