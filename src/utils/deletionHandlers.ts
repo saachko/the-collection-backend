@@ -37,6 +37,21 @@ const handleUserDelete = async (userId: ObjectId) => {
   collectionsByUser.map(
     async (collection) => await handleCollectionDelete(collection._id)
   );
+  const likedItemsByUser = await Item.find({ likes: userId });
+  likedItemsByUser.map(async (item) => {
+    await Item.findByIdAndUpdate(
+      item._id,
+      {
+        collectionId: item.collectionId,
+        ownerId: item.ownerId,
+        ownerName: item.ownerName,
+        itemName: item.itemName,
+        likes: item.likes.filter((id) => id.toString() !== userId.toString()),
+        customFields: JSON.parse(JSON.stringify(item.customFields)),
+      },
+      { new: true }
+    );
+  });
   await Collection.deleteMany({ ownerId: userId });
 };
 
