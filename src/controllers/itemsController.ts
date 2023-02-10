@@ -4,7 +4,7 @@ import { validationResult } from 'express-validator';
 
 import Item from '../models/item';
 
-import { handleItemDelete } from '../utils/functions';
+import { handleItemDelete } from '../utils/deletionHandlers';
 
 const getAllItems = async (request: Request, response: Response) => {
   try {

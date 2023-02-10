@@ -4,7 +4,7 @@ import { validationResult } from 'express-validator';
 
 import Collection from '../models/collection';
 
-import { handleCollectionDelete } from '../utils/functions';
+import { handleCollectionDelete } from '../utils/deletionHandlers';
 
 const getAllCollections = async (request: Request, response: Response) => {
   try {
