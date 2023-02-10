@@ -38,7 +38,7 @@ const createCustomField = async (request: Request, response: Response) => {
     const newCustomField = new CustomField({ collectionId, type, label });
     await newCustomField.save();
     return response.json({
-      user: newCustomField,
+      customField: newCustomField,
       message: 'New custom field is created',
     });
   } catch (error) {
