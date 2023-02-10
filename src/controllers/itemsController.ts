@@ -6,7 +6,7 @@ import Item from '../models/item';
 
 const getAllItems = async (request: Request, response: Response) => {
   try {
-    const items = await Item.find().sort({ updatedAt: -1 });
+    const items = await Item.find().sort({ createdAt: -1 });
     response.json(items);
   } catch (error) {
     throw new Error(`${error}`);
@@ -30,7 +30,7 @@ const getItemsByCollectionId = async (request: Request, response: Response) => {
       collectionId: {
         $all: collectionId,
       },
-    }).sort({ updatedAt: -1 });
+    }).sort({ createdAt: -1 });
     return response.json(itemsInCollection);
   } catch (error) {
     throw new Error(`${error}`);

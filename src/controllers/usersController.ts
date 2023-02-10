@@ -5,7 +5,7 @@ import User from '../models/user';
 
 const getUsers = async (request: Request, response: Response) => {
   try {
-    const users = await User.find().sort({ updatedAt: -1 });
+    const users = await User.find().sort({ createdAt: -1 });
     response.json(users);
   } catch (error) {
     throw new Error(`${error}`);

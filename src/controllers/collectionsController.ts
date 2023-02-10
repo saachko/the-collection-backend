@@ -6,7 +6,7 @@ import Collection from '../models/collection';
 
 const getAllCollections = async (request: Request, response: Response) => {
   try {
-    const collections = await Collection.find().sort({ updatedAt: -1 });
+    const collections = await Collection.find().sort({ createdAt: -1 });
     response.json(collections);
   } catch (error) {
     throw new Error(`${error}`);
@@ -30,7 +30,7 @@ const getCollectionsByUserId = async (request: Request, response: Response) => {
       ownerId: {
         $all: ownerId,
       },
-    }).sort({ updatedAt: -1 });
+    }).sort({ createdAt: -1 });
     return response.json(collectionsByUser);
   } catch (error) {
     throw new Error(`${error}`);
