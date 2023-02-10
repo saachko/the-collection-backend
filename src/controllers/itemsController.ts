@@ -3,6 +3,8 @@ import { ObjectId } from 'mongodb';
 import { validationResult } from 'express-validator';
 
 import Item from '../models/item';
+import Comment from '../models/comment';
+import Tag from '../models/tag';
 
 const getAllItems = async (request: Request, response: Response) => {
   try {
@@ -64,6 +66,19 @@ const createItem = async (request: Request, response: Response) => {
 const deleteItem = async (request: Request, response: Response) => {
   try {
     const itemId = new ObjectId(request.params.itemId);
+    await Comment.deleteMany({ itemId: itemId });
+    const updatedTags = await Tag.find({
+      items: {
+        $all: itemId,
+      },
+    });
+    updatedTags.map(
+      async (tag) =>
+        await Tag.findByIdAndUpdate(tag._id, {
+          ...tag,
+          items: tag.items.filter((id) => id !== itemId),
+        })
+    );
     const deletedItem = await Item.findByIdAndDelete(itemId);
     response.json(deletedItem);
   } catch (error) {
