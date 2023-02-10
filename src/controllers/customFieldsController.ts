@@ -4,6 +4,8 @@ import { validationResult } from 'express-validator';
 
 import CustomField from '../models/customField';
 
+import { handleCustomFieldDelete } from '../utils/deletionHandlers';
+
 const getCustomFieldById = async (request: Request, response: Response) => {
   try {
     const customFieldId = new ObjectId(request.params.fieldId);
@@ -50,6 +52,8 @@ const createCustomField = async (request: Request, response: Response) => {
 const deleteCustomField = async (request: Request, response: Response) => {
   try {
     const customFieldId = new ObjectId(request.params.fieldId);
+    const collectionId = (await CustomField.findById(customFieldId))?.collectionId;
+    await handleCustomFieldDelete(collectionId as ObjectId, request.params.fieldId);
     const deletedCustomField = await CustomField.findByIdAndDelete(customFieldId);
     response.json(deletedCustomField);
   } catch (error) {
@@ -63,9 +67,7 @@ const updateCustomField = async (request: Request, response: Response) => {
     const updatedCustomField = await CustomField.findByIdAndUpdate(
       customFieldId,
       request.body,
-      {
-        new: true,
-      }
+      { new: true }
     );
     response.json(updatedCustomField);
   } catch (error) {

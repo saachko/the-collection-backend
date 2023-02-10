@@ -40,4 +40,29 @@ const handleUserDelete = async (userId: ObjectId) => {
   await Collection.deleteMany({ ownerId: userId });
 };
 
-export { handleItemDelete, handleCollectionDelete, handleUserDelete };
+const handleCustomFieldDelete = async (collectionId: ObjectId, fieldId: string) => {
+  const allItems = await Item.find({ collectionId });
+  allItems.map(async (item) => {
+    await Item.findByIdAndUpdate(
+      item._id,
+      {
+        collectionId: item.collectionId,
+        ownerId: item.ownerId,
+        ownerName: item.ownerName,
+        itemName: item.itemName,
+        likes: item.likes,
+        customFields: item.customFields.filter(
+          (field) => field.customFieldId.toString() !== fieldId
+        ),
+      },
+      { new: true }
+    );
+  });
+};
+
+export {
+  handleItemDelete,
+  handleCollectionDelete,
+  handleUserDelete,
+  handleCustomFieldDelete,
+};
