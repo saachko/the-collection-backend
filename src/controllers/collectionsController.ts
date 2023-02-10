@@ -4,6 +4,8 @@ import { validationResult } from 'express-validator';
 
 import Collection from '../models/collection';
 
+import { handleCollectionDelete } from '../utils/functions';
+
 const getAllCollections = async (request: Request, response: Response) => {
   try {
     const collections = await Collection.find().sort({ createdAt: -1 });
@@ -68,6 +70,7 @@ const createCollection = async (request: Request, response: Response) => {
 const deleteCollection = async (request: Request, response: Response) => {
   try {
     const collectionId = new ObjectId(request.params.collectionId);
+    await handleCollectionDelete(collectionId);
     const deletedCollection = await Collection.findByIdAndDelete(collectionId);
     response.json(deletedCollection);
   } catch (error) {
