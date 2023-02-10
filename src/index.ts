@@ -10,6 +10,7 @@ import collectionsRouter from './routers/collectionsRouter';
 import customFieldsRouter from './routers/customFieldsRouter';
 import itemsRouter from './routers/itemsRouter';
 import tagsRouter from './routers/tagsRouter';
+import commentsRouter from './routers/commentsRouter';
 
 dotenv.config();
 const PORT = process.env.PORT || 3002;
@@ -23,6 +24,7 @@ app.use('/collections', collectionsRouter);
 app.use('/customFields', customFieldsRouter);
 app.use('/items', itemsRouter);
 app.use('/tags', tagsRouter);
+app.use('/comments', commentsRouter);
 
 mongoose.set('strictQuery', false);
 const start = async () => {
