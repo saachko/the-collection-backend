@@ -11,4 +11,34 @@ const handleUserUpdate = async (userId: ObjectId, userName: string) => {
   await Comment.updateMany({ authorId: userId }, { $set: { authorName: userName } });
 };
 
-export { handleUserUpdate };
+const handleCustomFieldUpdate = async (
+  collectionId: ObjectId,
+  fieldId: string,
+  fieldLabel: string
+) => {
+  const allItems = await Item.find({ collectionId });
+  allItems.map(async (item) => {
+    await Item.findByIdAndUpdate(
+      item._id,
+      {
+        collectionId: item.collectionId,
+        ownerId: item.ownerId,
+        ownerName: item.ownerName,
+        itemName: item.itemName,
+        likes: item.likes,
+        customFields: item.customFields.map((field) =>
+          field.customFieldId.toString() === fieldId
+            ? {
+                customFieldId: field.customFieldId,
+                label: fieldLabel,
+                value: field.value,
+              }
+            : field
+        ),
+      },
+      { new: true }
+    );
+  });
+};
+
+export { handleUserUpdate, handleCustomFieldUpdate };

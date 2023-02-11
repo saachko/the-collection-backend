@@ -5,6 +5,7 @@ import { validationResult } from 'express-validator';
 import CustomField from '../models/customField';
 
 import { handleCustomFieldDelete } from '../utils/deletionHandlers';
+import { handleCustomFieldUpdate } from '../utils/updateHandlers';
 
 const getCustomFieldById = async (request: Request, response: Response) => {
   try {
@@ -64,11 +65,19 @@ const deleteCustomField = async (request: Request, response: Response) => {
 const updateCustomField = async (request: Request, response: Response) => {
   try {
     const customFieldId = new ObjectId(request.params.fieldId);
+    const collectionId = (await CustomField.findById(customFieldId))?.collectionId;
     const updatedCustomField = await CustomField.findByIdAndUpdate(
       customFieldId,
       request.body,
       { new: true }
     );
+    if (updatedCustomField) {
+      await handleCustomFieldUpdate(
+        collectionId as ObjectId,
+        request.params.fieldId,
+        updatedCustomField.label
+      );
+    }
     response.json(updatedCustomField);
   } catch (error) {
     throw new Error(`${error}`);
