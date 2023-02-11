@@ -24,6 +24,14 @@ const itemScheme = new Schema(
       ref: 'Collection',
       required: true,
     },
+    collectionName: {
+      type: String,
+      required: true,
+    },
+    collectionTheme: {
+      type: String,
+      required: true,
+    },
     ownerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

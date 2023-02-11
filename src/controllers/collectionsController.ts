@@ -5,6 +5,7 @@ import { validationResult } from 'express-validator';
 import Collection from '../models/collection';
 
 import { handleCollectionDelete } from '../utils/deletionHandlers';
+import { handleCollectionUpdate } from '../utils/updateHandlers';
 
 const getAllCollections = async (request: Request, response: Response) => {
   try {
@@ -88,6 +89,14 @@ const updateCollection = async (request: Request, response: Response) => {
         new: true,
       }
     );
+    if (updatedCollection) {
+      await handleCollectionUpdate(
+        collectionId,
+        updatedCollection.title,
+        updatedCollection.theme
+      );
+    }
+
     response.json(updatedCollection);
   } catch (error) {
     throw new Error(`${error}`);

@@ -41,4 +41,12 @@ const handleCustomFieldUpdate = async (
   });
 };
 
-export { handleUserUpdate, handleCustomFieldUpdate };
+const handleCollectionUpdate = async (
+  collectionId: ObjectId,
+  collectionName: string,
+  collectionTheme: string
+) => {
+  await Item.updateMany({ collectionId }, { $set: { collectionName, collectionTheme } });
+};
+
+export { handleUserUpdate, handleCustomFieldUpdate, handleCollectionUpdate };
