@@ -31,7 +31,8 @@ const signUp = async (request: Request, response: Response) => {
       roles: [userRole?.value],
     });
     await newUser.save();
-    return response.json({ user: newUser, message: 'New user is created' });
+    const token = generateToken(newUser._id.toString(), newUser.roles, newUser.isBlocked);
+    return response.json({ user: newUser, token });
   } catch (error) {
     response.status(400).json({ message: 'Registration error' });
     throw new Error(`${error}`);
