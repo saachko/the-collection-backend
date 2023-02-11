@@ -17,7 +17,7 @@ const signUp = async (request: Request, response: Response) => {
     const { username, email, password } = request.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return response.status(400).json({ message: 'User already exists' });
+      return response.status(403).json({ message: 'User already exists' });
     }
 
     const hashPassword = bcrypt.hashSync(password, 6);
@@ -44,11 +44,11 @@ const signIn = async (request: Request, response: Response) => {
     const { email, password } = request.body;
     const user = await User.findOne({ email });
     if (!user) {
-      return response.status(400).json({ message: "User doesn't exist" });
+      return response.status(404).json({ message: "User doesn't exist" });
     }
     const validPassword = bcrypt.compareSync(password, user.password);
     if (!validPassword) {
-      return response.status(400).json({ message: 'Incorrect password!' });
+      return response.status(401).json({ message: 'Incorrect password!' });
     }
     if (user.isBlocked) {
       return response.status(403).json({ message: 'User is blocked!' });
