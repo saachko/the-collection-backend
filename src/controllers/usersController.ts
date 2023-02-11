@@ -4,6 +4,7 @@ import { ObjectId } from 'mongodb';
 import User from '../models/user';
 
 import { handleUserDelete } from '../utils/deletionHandlers';
+import { handleUserUpdate } from '../utils/updateHandlers';
 
 const getUsers = async (request: Request, response: Response) => {
   try {
@@ -41,6 +42,9 @@ const updateUser = async (request: Request, response: Response) => {
     const updatedUser = await User.findByIdAndUpdate(userId, request.body, {
       new: true,
     });
+    if (updatedUser) {
+      await handleUserUpdate(userId, updatedUser.username);
+    }
     response.json(updatedUser);
   } catch (error) {
     throw new Error(`${error}`);
