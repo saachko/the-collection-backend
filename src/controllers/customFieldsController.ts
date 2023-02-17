@@ -35,7 +35,7 @@ const createCustomField = async (request: Request, response: Response) => {
   try {
     const validationErrors = validationResult(request);
     if (!validationErrors.isEmpty()) {
-      response.status(400).json({ message: 'Creation error', validationErrors });
+      return response.status(400).json({ message: 'Creation error', validationErrors });
     }
     const { collectionId, type, label } = request.body;
     const newCustomField = new CustomField({ collectionId, type, label });

@@ -32,7 +32,7 @@ const createComment = async (request: Request, response: Response) => {
   try {
     const validationErrors = validationResult(request);
     if (!validationErrors.isEmpty()) {
-      response.status(400).json({ message: 'Creation error', validationErrors });
+      return response.status(400).json({ message: 'Creation error', validationErrors });
     }
     const { itemId, authorId, authorName, text } = request.body;
     const newComment = new Comment({ itemId, authorId, authorName, text });

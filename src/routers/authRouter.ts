@@ -9,10 +9,7 @@ authRouter.post(
   [
     check('username', "Username can't be empty").notEmpty(),
     check('email', "E-mail can't be empty").notEmpty(),
-    check('password', 'Password should contain from 4 to 20 symbols').isLength({
-      min: 4,
-      max: 20,
-    }),
+    check('password', "Password can't be empty").notEmpty(),
   ],
   signUp
 );

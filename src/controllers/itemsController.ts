@@ -43,7 +43,7 @@ const createItem = async (request: Request, response: Response) => {
   try {
     const validationErrors = validationResult(request);
     if (!validationErrors.isEmpty()) {
-      response.status(400).json({ message: 'Creation error', validationErrors });
+      return response.status(400).json({ message: 'Creation error', validationErrors });
     }
     const { collectionId, ownerId, ownerName, itemName, likes, customFields } =
       request.body;

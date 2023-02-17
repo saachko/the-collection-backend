@@ -41,7 +41,7 @@ const createTag = async (request: Request, response: Response) => {
   try {
     const validationErrors = validationResult(request);
     if (!validationErrors.isEmpty()) {
-      response.status(400).json({ message: 'Creation error', validationErrors });
+      return response.status(400).json({ message: 'Creation error', validationErrors });
     }
     const { label, items } = request.body;
     const newTag = new Tag({ label, items });

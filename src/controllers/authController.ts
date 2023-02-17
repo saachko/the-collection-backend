@@ -11,7 +11,9 @@ const signUp = async (request: Request, response: Response) => {
   try {
     const validationErrors = validationResult(request);
     if (!validationErrors.isEmpty()) {
-      response.status(400).json({ message: 'Registration error', validationErrors });
+      return response
+        .status(400)
+        .json({ message: 'Registration error', validationErrors });
     }
 
     const { username, email, password } = request.body;
