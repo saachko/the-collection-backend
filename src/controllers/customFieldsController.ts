@@ -40,10 +40,7 @@ const createCustomField = async (request: Request, response: Response) => {
     const { collectionId, type, label } = request.body;
     const newCustomField = new CustomField({ collectionId, type, label });
     await newCustomField.save();
-    return response.json({
-      customField: newCustomField,
-      message: 'New custom field is created',
-    });
+    return response.json(newCustomField);
   } catch (error) {
     response.status(400).json({ message: 'Unexpected creation error' });
     throw new Error(`${error}`);

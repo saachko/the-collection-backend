@@ -37,10 +37,7 @@ const createComment = async (request: Request, response: Response) => {
     const { itemId, authorId, authorName, text } = request.body;
     const newComment = new Comment({ itemId, authorId, authorName, text });
     await newComment.save();
-    return response.json({
-      comment: newComment,
-      message: 'New comment is created',
-    });
+    return response.json(newComment);
   } catch (error) {
     response.status(400).json({ message: 'Unexpected creation error' });
     throw new Error(`${error}`);

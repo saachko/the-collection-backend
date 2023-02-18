@@ -46,7 +46,7 @@ const createTag = async (request: Request, response: Response) => {
     const { label, items } = request.body;
     const newTag = new Tag({ label, items });
     await newTag.save();
-    return response.json({ tag: newTag, message: 'New tag is created' });
+    return response.json(newTag);
   } catch (error) {
     response.status(400).json({ message: 'Unexpected creation error' });
     throw new Error(`${error}`);

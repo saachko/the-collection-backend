@@ -58,10 +58,7 @@ const createCollection = async (request: Request, response: Response) => {
       ownerName,
     });
     await newCollection.save();
-    return response.json({
-      collection: newCollection,
-      message: 'New collection is created',
-    });
+    return response.json(newCollection);
   } catch (error) {
     response.status(400).json({ message: 'Unexpected creation error' });
     throw new Error(`${error}`);
