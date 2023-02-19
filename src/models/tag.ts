@@ -15,7 +15,7 @@ const tagScheme = new Schema(
       },
     ],
   },
-  { versionKey: false }
+  { timestamps: true, versionKey: false }
 );
 
 export default mongoose.model('Tag', tagScheme);
