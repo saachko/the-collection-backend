@@ -17,23 +17,21 @@ const handleCustomFieldUpdate = async (
 ) => {
   const allItems = await Item.find({ collectionId });
   allItems.map(async (item) => {
-    const updatedItem = {
-      collectionId: item.collectionId,
-      ownerId: item.ownerId,
-      ownerName: item.ownerName,
-      itemName: item.itemName,
-      likes: item.likes,
-      customFields: item.customFields.map((field) =>
-        field.customFieldId.toString() === fieldId
-          ? {
-              customFieldId: field.customFieldId,
-              label: fieldLabel,
-              value: field.value,
-            }
-          : field
-      ),
-    };
-    await Item.findByIdAndUpdate(item._id, updatedItem, { new: true });
+    await Item.findByIdAndUpdate(
+      item._id,
+      {
+        customFields: item.customFields.map((field) =>
+          field.customFieldId.toString() === fieldId
+            ? {
+                customFieldId: field.customFieldId,
+                label: fieldLabel,
+                value: field.value,
+              }
+            : field
+        ),
+      },
+      { new: true }
+    );
   });
 };
 

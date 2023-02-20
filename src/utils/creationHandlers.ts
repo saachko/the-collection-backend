@@ -7,9 +7,7 @@ const handleItemCreation = async (collectionId: ObjectId) => {
   if (updatedCollection) {
     await Collection.findByIdAndUpdate(
       updatedCollection._id,
-      {
-        itemsQuantity: updatedCollection.itemsQuantity + 1,
-      },
+      { itemsQuantity: updatedCollection.itemsQuantity + 1 },
       { new: true }
     );
   }

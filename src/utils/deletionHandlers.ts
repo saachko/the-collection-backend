@@ -14,19 +14,17 @@ const handleItemDelete = async (itemId: string, collectionId: ObjectId) => {
     },
   });
   updatedTags.map(async (tag) => {
-    const updatedTag = {
-      label: tag.label,
-      items: tag.items.filter((id) => id.toString() !== itemId),
-    };
-    await Tag.findByIdAndUpdate(tag._id, updatedTag, { new: true });
+    await Tag.findByIdAndUpdate(
+      tag._id,
+      { items: tag.items.filter((id) => id.toString() !== itemId) },
+      { new: true }
+    );
   });
   const updatedCollection = await Collection.findById(collectionId);
   if (updatedCollection) {
     await Collection.findByIdAndUpdate(
       updatedCollection._id,
-      {
-        itemsQuantity: updatedCollection.itemsQuantity - 1,
-      },
+      { itemsQuantity: updatedCollection.itemsQuantity - 1 },
       { new: true }
     );
   }
@@ -48,15 +46,11 @@ const handleUserDelete = async (userId: ObjectId) => {
   );
   const likedItemsByUser = await Item.find({ likes: userId });
   likedItemsByUser.map(async (item) => {
-    const updatedItem = {
-      collectionId: item.collectionId,
-      ownerId: item.ownerId,
-      ownerName: item.ownerName,
-      itemName: item.itemName,
-      likes: item.likes.filter((id) => id.toString() !== userId.toString()),
-      customFields: JSON.parse(JSON.stringify(item.customFields)),
-    };
-    await Item.findByIdAndUpdate(item._id, updatedItem, { new: true });
+    await Item.findByIdAndUpdate(
+      item._id,
+      { likes: item.likes.filter((id) => id.toString() !== userId.toString()) },
+      { new: true }
+    );
   });
   await Collection.deleteMany({ ownerId: userId });
 };
@@ -64,17 +58,15 @@ const handleUserDelete = async (userId: ObjectId) => {
 const handleCustomFieldDelete = async (collectionId: ObjectId, fieldId: string) => {
   const allItems = await Item.find({ collectionId });
   allItems.map(async (item) => {
-    const updatedItem = {
-      collectionId: item.collectionId,
-      ownerId: item.ownerId,
-      ownerName: item.ownerName,
-      itemName: item.itemName,
-      likes: item.likes,
-      customFields: item.customFields.filter(
-        (field) => field.customFieldId.toString() !== fieldId
-      ),
-    };
-    await Item.findByIdAndUpdate(item._id, updatedItem, { new: true });
+    await Item.findByIdAndUpdate(
+      item._id,
+      {
+        customFields: item.customFields.filter(
+          (field) => field.customFieldId.toString() !== fieldId
+        ),
+      },
+      { new: true }
+    );
   });
 };
 
