@@ -6,7 +6,7 @@ import Item from '../models/item';
 import CustomField from '../models/customField';
 import Collection from '../models/collection';
 
-const handleItemDelete = async (itemId: string) => {
+const handleItemDelete = async (itemId: string, collectionId: ObjectId) => {
   await Comment.deleteMany({ itemId: itemId });
   const updatedTags = await Tag.find({
     items: {
@@ -20,11 +20,23 @@ const handleItemDelete = async (itemId: string) => {
     };
     await Tag.findByIdAndUpdate(tag._id, updatedTag, { new: true });
   });
+  const updatedCollection = await Collection.findById(collectionId);
+  if (updatedCollection) {
+    await Collection.findByIdAndUpdate(
+      updatedCollection._id,
+      {
+        itemsQuantity: updatedCollection.itemsQuantity - 1,
+      },
+      { new: true }
+    );
+  }
 };
 
 const handleCollectionDelete = async (collectionId: ObjectId) => {
   const itemsInCollection = await Item.find({ collectionId: collectionId });
-  itemsInCollection.map(async (item) => await handleItemDelete(item._id.toString()));
+  itemsInCollection.map(
+    async (item) => await handleItemDelete(item._id.toString(), collectionId)
+  );
   await CustomField.deleteMany({ collectionId: collectionId });
   await Item.deleteMany({ collectionId: collectionId });
 };
