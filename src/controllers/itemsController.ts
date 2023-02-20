@@ -5,6 +5,7 @@ import { validationResult } from 'express-validator';
 import Item from '../models/item';
 
 import { handleItemDelete } from '../utils/deletionHandlers';
+import { handleItemCreation } from '../utils/creationHandlers';
 
 const getAllItems = async (request: Request, response: Response) => {
   try {
@@ -64,6 +65,7 @@ const createItem = async (request: Request, response: Response) => {
       likes: [],
       customFields: customFields || [],
     });
+    await handleItemCreation(newItem.collectionId);
     await newItem.save();
     return response.json(newItem);
   } catch (error) {

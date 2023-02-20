@@ -56,6 +56,7 @@ const createCollection = async (request: Request, response: Response) => {
         `https://source.boringavatars.com/marble/120/${title}%20${ownerId}?colors=F97D58,CDDCEB,F9DBCF,33B99,5D70C5&square`,
       ownerId,
       ownerName,
+      itemsQuantity: 0,
     });
     await newCollection.save();
     return response.json(newCollection);

@@ -26,6 +26,11 @@ const collectionScheme = new Schema(
       type: String,
       required: true,
     },
+    itemsQuantity: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
   },
   { timestamps: true, versionKey: false }
 );
