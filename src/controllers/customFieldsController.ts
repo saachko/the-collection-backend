@@ -24,7 +24,7 @@ const getCustomFieldsByCollectionId = async (request: Request, response: Respons
       collectionId: {
         $all: collectionId,
       },
-    }).sort({ createdAt: -1 });
+    }).sort({ createdAt: 1 });
     return response.json(customFieldsInCollection);
   } catch (error) {
     throw new Error(`${error}`);
