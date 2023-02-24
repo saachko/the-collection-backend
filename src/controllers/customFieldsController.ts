@@ -72,7 +72,8 @@ const updateCustomField = async (request: Request, response: Response) => {
       await handleCustomFieldUpdate(
         collectionId as ObjectId,
         request.params.fieldId,
-        updatedCustomField.label
+        updatedCustomField.label,
+        updatedCustomField.type
       );
     }
     response.json(updatedCustomField);

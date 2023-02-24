@@ -12,6 +12,10 @@ const customFieldScheme = new Schema({
     type: String,
     required: true,
   },
+  type: {
+    type: String,
+    required: true,
+  },
   value: {
     type: String,
   },
@@ -44,6 +48,9 @@ const itemScheme = new Schema(
     itemName: {
       type: String,
       required: true,
+    },
+    itemImage: {
+      type: String,
     },
     likes: [
       {

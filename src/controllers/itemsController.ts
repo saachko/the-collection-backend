@@ -53,6 +53,7 @@ const createItem = async (request: Request, response: Response) => {
       ownerId,
       ownerName,
       itemName,
+      itemImage,
       customFields,
     } = request.body;
     const newItem = new Item({
@@ -62,6 +63,9 @@ const createItem = async (request: Request, response: Response) => {
       ownerId,
       ownerName,
       itemName,
+      itemImage:
+        itemImage ||
+        `https://source.boringavatars.com/marble/120/${itemName}%20${ownerId}?colors=F97D58,CDDCEB,F9DBCF,33B99,5D70C5&square`,
       likes: [],
       customFields: customFields || [],
     });

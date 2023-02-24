@@ -13,7 +13,8 @@ const handleUserUpdate = async (userId: ObjectId, userName: string) => {
 const handleCustomFieldUpdate = async (
   collectionId: ObjectId,
   fieldId: string,
-  fieldLabel: string
+  fieldLabel: string,
+  fieldType: string
 ) => {
   const allItems = await Item.find({ collectionId });
   allItems.map(async (item) => {
@@ -25,6 +26,7 @@ const handleCustomFieldUpdate = async (
             ? {
                 customFieldId: field.customFieldId,
                 label: fieldLabel,
+                type: fieldType,
                 value: field.value,
               }
             : field
