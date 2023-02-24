@@ -4,10 +4,17 @@ import Comment from '../models/comment';
 import Item from '../models/item';
 import Collection from '../models/collection';
 
-const handleUserUpdate = async (userId: ObjectId, userName: string) => {
+const handleUserUpdate = async (
+  userId: ObjectId,
+  userName: string,
+  userAvatar: string
+) => {
   await Collection.updateMany({ ownerId: userId }, { $set: { ownerName: userName } });
   await Item.updateMany({ ownerId: userId }, { $set: { ownerName: userName } });
-  await Comment.updateMany({ authorId: userId }, { $set: { authorName: userName } });
+  await Comment.updateMany(
+    { authorId: userId },
+    { $set: { authorName: userName, authorAvatar: userAvatar } }
+  );
 };
 
 const handleCustomFieldUpdate = async (

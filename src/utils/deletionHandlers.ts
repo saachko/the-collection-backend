@@ -52,6 +52,7 @@ const handleUserDelete = async (userId: ObjectId) => {
       { new: true }
     );
   });
+  await Comment.deleteMany({ authorId: userId });
   await Collection.deleteMany({ ownerId: userId });
 };
 

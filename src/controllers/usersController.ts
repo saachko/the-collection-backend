@@ -43,7 +43,7 @@ const updateUser = async (request: Request, response: Response) => {
       new: true,
     });
     if (updatedUser) {
-      await handleUserUpdate(userId, updatedUser.username);
+      await handleUserUpdate(userId, updatedUser.username, updatedUser.avatar);
     }
     response.json(updatedUser);
   } catch (error) {

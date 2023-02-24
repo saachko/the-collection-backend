@@ -17,6 +17,10 @@ const commentScheme = new Schema(
       type: String,
       required: true,
     },
+    authorAvatar: {
+      type: String,
+      required: true,
+    },
     text: {
       type: String,
       required: true,

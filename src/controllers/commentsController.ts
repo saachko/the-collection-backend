@@ -34,8 +34,8 @@ const createComment = async (request: Request, response: Response) => {
     if (!validationErrors.isEmpty()) {
       return response.status(400).json({ message: 'Creation error', validationErrors });
     }
-    const { itemId, authorId, authorName, text } = request.body;
-    const newComment = new Comment({ itemId, authorId, authorName, text });
+    const { itemId, authorId, authorName, authorAvatar, text } = request.body;
+    const newComment = new Comment({ itemId, authorId, authorName, authorAvatar, text });
     await newComment.save();
     return response.json(newComment);
   } catch (error) {
