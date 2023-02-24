@@ -51,6 +51,7 @@ const itemScheme = new Schema(
     },
     itemImage: {
       type: String,
+      required: true,
     },
     likes: [
       {

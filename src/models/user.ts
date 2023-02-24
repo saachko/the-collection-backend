@@ -18,6 +18,7 @@ const userScheme = new Schema(
     },
     avatar: {
       type: String,
+      required: true,
     },
     isBlocked: {
       type: Boolean,
