@@ -20,7 +20,7 @@ const handleCustomFieldCreate = async (
   type: string,
   label: string
 ) => {
-  const newField = { customFieldId, label, type, value: '⎯' };
+  const newField = { customFieldId, label, type, value: '' };
   await Item.updateMany({ collectionId }, { $push: { customFields: newField } });
 };
 
