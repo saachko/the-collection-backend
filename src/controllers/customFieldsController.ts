@@ -53,9 +53,7 @@ const deleteCustomField = async (request: Request, response: Response) => {
   try {
     const customFieldId = new ObjectId(request.params.fieldId);
     const collectionId = (await CustomField.findById(customFieldId))?.collectionId;
-    await Promise.all([
-      await handleCustomFieldDelete(collectionId as ObjectId, request.params.fieldId),
-    ]);
+    await handleCustomFieldDelete(collectionId as ObjectId, customFieldId);
     const deletedCustomField = await CustomField.findByIdAndDelete(customFieldId);
     response.json(deletedCustomField);
   } catch (error) {
@@ -73,14 +71,12 @@ const updateCustomField = async (request: Request, response: Response) => {
       { new: true }
     );
     if (updatedCustomField) {
-      await Promise.all([
-        await handleCustomFieldUpdate(
-          collectionId as ObjectId,
-          request.params.fieldId,
-          updatedCustomField.label,
-          updatedCustomField.type
-        ),
-      ]);
+      await handleCustomFieldUpdate(
+        collectionId as ObjectId,
+        request.params.fieldId,
+        updatedCustomField.label,
+        updatedCustomField.type
+      );
     }
     response.json(updatedCustomField);
   } catch (error) {
