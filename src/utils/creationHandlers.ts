@@ -6,9 +6,10 @@ import Item from '../models/item';
 const handleItemCreation = async (collectionId: ObjectId) => {
   const updatedCollection = await Collection.findById(collectionId);
   if (updatedCollection) {
+    const newQuantity = updatedCollection.itemsQuantity + 1;
     await Collection.findByIdAndUpdate(
       updatedCollection._id,
-      { itemsQuantity: updatedCollection.itemsQuantity + 1 },
+      { itemsQuantity: newQuantity },
       { new: true }
     );
   }
