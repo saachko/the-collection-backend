@@ -59,13 +59,12 @@ const handleUserDelete = async (userId: ObjectId) => {
 const handleCustomFieldDelete = async (collectionId: ObjectId, fieldId: string) => {
   const allItems = await Item.find({ collectionId });
   allItems.map(async (item) => {
+    const newCustomFields = item.customFields.filter(
+      (field) => field.customFieldId.toString() !== fieldId
+    );
     await Item.findByIdAndUpdate(
       item._id,
-      {
-        customFields: item.customFields.filter(
-          (field) => field.customFieldId.toString() !== fieldId
-        ),
-      },
+      { customFields: newCustomFields },
       { new: true }
     );
   });

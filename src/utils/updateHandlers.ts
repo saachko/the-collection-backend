@@ -25,20 +25,19 @@ const handleCustomFieldUpdate = async (
 ) => {
   const allItems = await Item.find({ collectionId });
   allItems.map(async (item) => {
+    const updatedCustomFields = item.customFields.map((field) =>
+      field.customFieldId.toString() === fieldId
+        ? {
+            customFieldId: field.customFieldId,
+            label: fieldLabel,
+            type: fieldType,
+            value: field.value,
+          }
+        : field
+    );
     await Item.findByIdAndUpdate(
       item._id,
-      {
-        customFields: item.customFields.map((field) =>
-          field.customFieldId.toString() === fieldId
-            ? {
-                customFieldId: field.customFieldId,
-                label: fieldLabel,
-                type: fieldType,
-                value: field.value,
-              }
-            : field
-        ),
-      },
+      { customFields: updatedCustomFields },
       { new: true }
     );
   });
