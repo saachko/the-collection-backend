@@ -19,28 +19,15 @@ const handleUserUpdate = async (
 
 const handleCustomFieldUpdate = async (
   collectionId: ObjectId,
-  fieldId: string,
+  fieldId: ObjectId,
   fieldLabel: string,
   fieldType: string
 ) => {
-  const allItems = await Item.find({ collectionId });
-  allItems.map(async (item) => {
-    const updatedCustomFields = item.customFields.map((field) =>
-      field.customFieldId.toString() === fieldId
-        ? {
-            customFieldId: field.customFieldId,
-            label: fieldLabel,
-            type: fieldType,
-            value: field.value,
-          }
-        : field
-    );
-    await Item.findByIdAndUpdate(
-      item._id,
-      { customFields: updatedCustomFields },
-      { new: true }
-    );
-  });
+  const filter = { 'customFields.customFieldId': fieldId, collectionId: collectionId };
+  const updatedFields = {
+    $set: { 'customFields.$.label': fieldLabel, 'customFields.$.type': fieldType },
+  };
+  await Item.updateMany(filter, updatedFields, { multi: true });
 };
 
 const handleCollectionUpdate = async (
