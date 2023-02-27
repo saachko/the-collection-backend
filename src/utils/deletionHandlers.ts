@@ -6,20 +6,13 @@ import Item from '../models/item';
 import CustomField from '../models/customField';
 import Collection from '../models/collection';
 
-const handleItemDelete = async (itemId: string, collectionId: ObjectId) => {
+const handleItemDelete = async (itemId: ObjectId, collectionId: ObjectId) => {
   await Comment.deleteMany({ itemId: itemId });
-  const updatedTags = await Tag.find({
-    items: {
-      $all: itemId,
-    },
-  });
-  updatedTags.map(async (tag) => {
-    await Tag.findByIdAndUpdate(
-      tag._id,
-      { items: tag.items.filter((id) => id.toString() !== itemId) },
-      { new: true }
-    );
-  });
+  await Tag.updateMany(
+    { items: { $all: itemId } },
+    { $pull: { items: itemId } },
+    { multi: true }
+  );
   const updatedCollection = await Collection.findById(collectionId);
   if (updatedCollection) {
     await Collection.findByIdAndUpdate(
@@ -32,9 +25,7 @@ const handleItemDelete = async (itemId: string, collectionId: ObjectId) => {
 
 const handleCollectionDelete = async (collectionId: ObjectId) => {
   const itemsInCollection = await Item.find({ collectionId: collectionId });
-  itemsInCollection.map(
-    async (item) => await handleItemDelete(item._id.toString(), collectionId)
-  );
+  itemsInCollection.map(async (item) => await handleItemDelete(item._id, collectionId));
   await CustomField.deleteMany({ collectionId: collectionId });
   await Item.deleteMany({ collectionId: collectionId });
 };
@@ -44,14 +35,11 @@ const handleUserDelete = async (userId: ObjectId) => {
   collectionsByUser.map(
     async (collection) => await handleCollectionDelete(collection._id)
   );
-  const likedItemsByUser = await Item.find({ likes: userId });
-  likedItemsByUser.map(async (item) => {
-    await Item.findByIdAndUpdate(
-      item._id,
-      { likes: item.likes.filter((id) => id.toString() !== userId.toString()) },
-      { new: true }
-    );
-  });
+  await Item.updateMany(
+    { likes: { $all: userId } },
+    { $pull: { likes: userId } },
+    { multi: true }
+  );
   await Comment.deleteMany({ authorId: userId });
   await Collection.deleteMany({ ownerId: userId });
 };

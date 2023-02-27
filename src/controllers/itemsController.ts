@@ -83,7 +83,7 @@ const deleteItem = async (request: Request, response: Response) => {
     const itemId = new ObjectId(request.params.itemId);
     const deletedItem = await Item.findByIdAndDelete(itemId);
     if (deletedItem) {
-      await handleItemDelete(request.params.itemId, deletedItem.collectionId);
+      await handleItemDelete(itemId, deletedItem.collectionId);
     }
     response.json(deletedItem);
   } catch (error) {
