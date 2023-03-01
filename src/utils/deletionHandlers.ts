@@ -13,15 +13,11 @@ const handleItemDelete = async (itemId: ObjectId, collectionId: ObjectId) => {
     { $pull: { items: itemId } },
     { multi: true }
   );
-  const updatedCollection = await Collection.findById(collectionId);
-  if (updatedCollection) {
-    const newQuantity = updatedCollection.itemsQuantity - 1;
-    await Collection.findByIdAndUpdate(
-      updatedCollection._id,
-      { itemsQuantity: newQuantity },
-      { new: true }
-    );
-  }
+  await Collection.findByIdAndUpdate(
+    collectionId,
+    { $inc: { itemsQuantity: -1 } },
+    { new: true }
+  );
 };
 
 const handleCollectionDelete = async (collectionId: ObjectId) => {

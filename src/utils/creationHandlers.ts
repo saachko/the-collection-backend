@@ -4,15 +4,11 @@ import Collection from '../models/collection';
 import Item from '../models/item';
 
 const handleItemCreation = async (collectionId: ObjectId) => {
-  const updatedCollection = await Collection.findById(collectionId);
-  if (updatedCollection) {
-    const newQuantity = updatedCollection.itemsQuantity + 1;
-    await Collection.findByIdAndUpdate(
-      updatedCollection._id,
-      { itemsQuantity: newQuantity },
-      { new: true }
-    );
-  }
+  await Collection.findOneAndUpdate(
+    { _id: collectionId },
+    { $inc: { itemsQuantity: 1 } },
+    { new: true }
+  );
 };
 
 const handleCustomFieldCreate = async (
