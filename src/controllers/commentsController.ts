@@ -1,8 +1,11 @@
 import { Response, Request } from 'express';
 import { ObjectId } from 'mongodb';
 import { validationResult } from 'express-validator';
+import events from 'events';
 
 import Comment from '../models/comment';
+
+const emitter = new events.EventEmitter();
 
 const getCommentById = async (request: Request, response: Response) => {
   try {
@@ -36,6 +39,7 @@ const createComment = async (request: Request, response: Response) => {
     }
     const { itemId, authorId, authorName, authorAvatar, text } = request.body;
     const newComment = new Comment({ itemId, authorId, authorName, authorAvatar, text });
+    emitter.emit('changedComment', { comment: newComment, type: 'newComment' });
     await newComment.save();
     return response.json(newComment);
   } catch (error) {
@@ -48,6 +52,7 @@ const deleteComment = async (request: Request, response: Response) => {
   try {
     const commentId = new ObjectId(request.params.commentId);
     const deletedComment = await Comment.findByIdAndDelete(commentId);
+    emitter.emit('changedComment', { comment: deletedComment, type: 'deletedComment' });
     response.json(deletedComment);
   } catch (error) {
     throw new Error(`${error}`);
@@ -66,10 +71,17 @@ const updateComment = async (request: Request, response: Response) => {
   }
 };
 
+const getChangedComment = async (request: Request, response: Response) => {
+  emitter.once('changedComment', (comment) => {
+    return response.json(comment);
+  });
+};
+
 export {
   getCommentById,
   getCommentsByItemId,
   createComment,
   deleteComment,
   updateComment,
+  getChangedComment,
 };

@@ -7,12 +7,14 @@ import {
   createComment,
   deleteComment,
   updateComment,
+  getChangedComment,
 } from '../controllers/commentsController';
 import usersMiddleware from '../middlewares/usersMiddlewares';
 
 const commentsRouter = express.Router();
 commentsRouter.get('/:commentId', getCommentById);
 commentsRouter.get('/item/:itemId', getCommentsByItemId);
+commentsRouter.get('/', getChangedComment);
 commentsRouter.post(
   '/',
   usersMiddleware,
