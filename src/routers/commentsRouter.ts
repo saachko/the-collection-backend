@@ -2,6 +2,7 @@ import express from 'express';
 import { check } from 'express-validator';
 
 import {
+  getAllComments,
   getCommentById,
   getCommentsByItemId,
   createComment,
@@ -12,6 +13,7 @@ import {
 import usersMiddleware from '../middlewares/usersMiddlewares';
 
 const commentsRouter = express.Router();
+commentsRouter.get('/all', getAllComments);
 commentsRouter.get('/:commentId', getCommentById);
 commentsRouter.get('/item/:itemId', getCommentsByItemId);
 commentsRouter.get('/', getChangedComment);

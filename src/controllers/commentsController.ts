@@ -7,6 +7,15 @@ import Comment from '../models/comment';
 
 const emitter = new events.EventEmitter();
 
+const getAllComments = async (request: Request, response: Response) => {
+  try {
+    const comments = await Comment.find().sort({ createdAt: -1 });
+    response.json(comments);
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
+};
+
 const getCommentById = async (request: Request, response: Response) => {
   try {
     const commentId = new ObjectId(request.params.commentId);
@@ -78,6 +87,7 @@ const getChangedComment = async (request: Request, response: Response) => {
 };
 
 export {
+  getAllComments,
   getCommentById,
   getCommentsByItemId,
   createComment,
